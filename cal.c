@@ -2,9 +2,12 @@
 #include <stdlib.h>
 #include <time.h>
 
+  //日付のデータ型
 typedef struct{
  int year,month,day;
  }date_t;
+
+  //今日の日付を求める関数
  date_t *getdate(date_t *today)
 {
 	time_t t;
@@ -16,6 +19,7 @@ typedef struct{
 	today->day = lt->tm_mday;
 	return today;
 }
+  //日数の計算
 int Days(date_t *date)
 {
     int y = date->year,m = date->month;
@@ -29,6 +33,7 @@ int Days(date_t *date)
 
 int main(int argc,char *argv[])
 {
+  //誕生曜日を表示
 	if(argc == 4){	
 		date_t today,birthday;
 		char *day_of_week[] = {"日","月","火","水","木","金","土"};
@@ -39,25 +44,27 @@ int main(int argc,char *argv[])
 		printf("%dday\n",Days(&today) - Days(&birthday));
 		printf("%s曜日\n",day_of_week[Days(&birthday)%7]);
 	}
-	
+  //カレンダーを表示
 	if(argc == 3){
 		int days,i,j,cnt=0;
 		date_t d1,d2;
 		d1.year = atoi(argv[1]);
 		d1.month = atoi(argv[2]);
 		d1.day = 1;
-	
 		d2.year = atoi(argv[1]);
 		d2.month = atoi(argv[2])+1;
 		d2.day = 1;
 		days = Days(&d2) - Days(&d1);
 		printf("%d年%d月\n 日 月 火 水 木 金 土\n",d1.year,d1.month);
+		//月の初日の曜日のずれを出力
 		for(i=1; i <= Days(&d1)%7; i++){
 			printf("   ");
 			cnt++;
 		}
+		//日にちを出力
 		for(j = 1 ; j <= days; j++){
 		cnt++;
+		//土曜の時に改行
 		if(cnt % 7 == 0)		
 			printf("%3d\n",j);
 		else
@@ -65,9 +72,9 @@ int main(int argc,char *argv[])
 		}
 		printf("\n");
 	}
-	//引数エラー処理
+  //引数エラー処理
 	else{
-		fprintf(stderr,"usage>%s year month day OR year month \n",argv[0]);
+	  fprintf(stderr,"usage>%s year month day OR year month \n",argv[0]);
 		return 1;
 	}
 		
