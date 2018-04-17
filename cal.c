@@ -1,3 +1,8 @@
+/*
+課題名:カレンダー
+作成者:安達康平
+作成日付:2018/4/17
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -46,7 +51,7 @@ int main(int argc,char *argv[])
 	}
   //カレンダーを表示
 	if(argc == 3){
-		int days,i,j,cnt=0;
+		int days,i,cnt=0;
 		date_t d1,d2;
 		d1.year = atoi(argv[1]);
 		d1.month = atoi(argv[2]);
@@ -62,13 +67,13 @@ int main(int argc,char *argv[])
 			cnt++;
 		}
 		//日にちを出力
-		for(j = 1 ; j <= days; j++){
+		for(i = 1 ; i <= days; i++){
 		cnt++;
 		//土曜の時に改行
 		if(cnt % 7 == 0)		
-			printf("%3d\n",j);
+			printf("%3d\n",i);
 		else
-			printf("%3d",j);
+			printf("%3d",i);
 		}
 		printf("\n");
 	}
@@ -82,5 +87,6 @@ int main(int argc,char *argv[])
 		
 		return 0;
 }
+/*
 
-
+ */
