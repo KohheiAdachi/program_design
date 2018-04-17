@@ -50,7 +50,7 @@ int main(int argc,char *argv[])
 		printf("%s曜日\n",day_of_week[Days(&birthday)%7]);
 	}
   //カレンダーを表示
-	if(argc == 3){
+	else if(argc == 3){
 		int days,i,cnt=0;
 		date_t d1,d2;
 		d1.year = atoi(argv[1]);
