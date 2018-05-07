@@ -4,17 +4,20 @@
 #include <stdlib.h>
 
 #include "stack.h"
-
-int num1(char n){
-  return (atoi(&n));
-}
-
 /*
+int num1(char n){
+  int num;
+  num = atoi(&n);
+
+  return num;
+}
+*/
+
 int num1(char n){
 
   return(n - '0');
 }
-*/
+
 int number(char *expr,int *next){
   int value;
 
@@ -43,7 +46,6 @@ int number(char *expr,int *next){
 }
 void storage_2pop(stack *storage,int *pop_element){
     int i;
-
     //2要素を取り出すかスタックが空になるまでスタックから要素を取り出す
     for (i = 0; i < 2 && !isempty(storage); i++) {
       pop_element[i] = pop(storage);
@@ -53,12 +55,12 @@ void storage_2pop(stack *storage,int *pop_element){
       printf("error\n");
       exit(1);
     }
+
 }
 //加算
 void add(stack *storage, int *count){
     int a[2];
     storage_2pop(storage, a);
-    printf("add%d\n",a[1]+a[0]);
     push(a[1] + a[0], storage);
     (*count)++;
 }
@@ -67,7 +69,7 @@ void add(stack *storage, int *count){
 void sub(stack *storage, int *count){
     int a[2];
     storage_2pop(storage, a);
-    //printf("sub%d\n",a[1]-a[0]);
+
     push(a[1] - a[0], storage);
     (*count)++;
 
@@ -77,7 +79,6 @@ void sub(stack *storage, int *count){
 void mul(stack *storage, int *count){
     int a[2];
     storage_2pop(storage, a);
-    //printf("multi%d\n",a[1]*a[0]);
     push(a[1] * a[0], storage);
     (*count)++;
 
@@ -111,7 +112,7 @@ int Valpolish(char *expr){
     makenull(&storage);
 
     while(count < size){
-      printf("%c",expr[count]);
+      //printf("%c",expr[count]);
       if(isdigit(expr[count])){
           tmp = number(expr,&count);
           push(tmp,&storage);
@@ -152,10 +153,16 @@ int Valpolish(char *expr){
 int main(int argc, char *argv[]){
   int ans;
 
-  //入力された逆ポーランド式を計算
-  printf("Polish Notation= ?\n");
-  ans = Valpolish(argv[1]);
-  printf("%d\n",ans );
+  if(argc < 2){
+    fprintf(stderr, "引数エラー\n");
+    return 1;
+  }
+  else{
+    //入力された逆ポーランド式を計算
+    printf("answer = ");
+    ans = Valpolish(argv[1]);
+    printf("%d\n",ans );
+  }
 
   return 0;
 
