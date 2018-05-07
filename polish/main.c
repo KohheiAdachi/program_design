@@ -9,11 +9,18 @@ int num1(char n){
   return (atoi(&n));
 }
 
+/*
+int num1(char n){
+
+  return(n - '0');
+}
+*/
 int number(char *expr,int *next){
   int value;
 
   if(!isdigit(expr[*next])){
-    return -1;
+
+    exit(1);
   }
   else{
     value = num1(expr[*next]);
@@ -32,55 +39,7 @@ int number(char *expr,int *next){
       printf("カンマエラー\n");
       exit(1);
     }
-    return value;
   }
-}
-
-//加算
-void add(stack *storage, int *count){
-    int a[2];
-    //storage_2acq(storage, a);
-    //printf("add%d\n",a[1]+a[0]);
-    push(a[1] + a[0], storage);
-    (*count)++;
-}
-
-//減算
-void sub(stack *storage, int *count){
-    int a[2];
-  //  storage_2acq(storage, a);
-    //printf("sub%d\n",a[1]-a[0]);
-    push(a[1] - a[0], storage);
-    (*count)++;
-
-}
-
-//乗算
-void mul(stack *storage, int *count){
-    int a[2];
-  //  storage_2acq(storage, a);
-    //printf("multi%d\n",a[1]*a[0]);
-    push(a[1] * a[0], storage);
-    (*count)++;
-
-}
-
-//除算
-void division(stack *storage, int *count){
-    int a[2];
-  //  storage_2acq(storage, a);
-    //printf("division%d\n",a[1]/a[0]);
-    push(a[1] / a[0], storage);
-    (*count)++;
-
-}
-
-//符号を反転
-void min(stack *storage, int *count){
-    int a;
-    a = pop(storage) * -1;
-    push(a, storage);
-    (*count)++;
 }
 void storage_2pop(stack *storage,int *pop_element){
     int i;
@@ -95,6 +54,53 @@ void storage_2pop(stack *storage,int *pop_element){
       exit(1);
     }
 }
+//加算
+void add(stack *storage, int *count){
+    int a[2];
+    storage_2pop(storage, a);
+    printf("add%d\n",a[1]+a[0]);
+    push(a[1] + a[0], storage);
+    (*count)++;
+}
+
+//減算
+void sub(stack *storage, int *count){
+    int a[2];
+    storage_2pop(storage, a);
+    //printf("sub%d\n",a[1]-a[0]);
+    push(a[1] - a[0], storage);
+    (*count)++;
+
+}
+
+//乗算
+void mul(stack *storage, int *count){
+    int a[2];
+    storage_2pop(storage, a);
+    //printf("multi%d\n",a[1]*a[0]);
+    push(a[1] * a[0], storage);
+    (*count)++;
+
+}
+
+//除算
+void division(stack *storage, int *count){
+    int a[2];
+    storage_2pop(storage, a);
+    //printf("division%d\n",a[1]/a[0]);
+    push(a[1] / a[0], storage);
+    (*count)++;
+
+}
+
+//符号を反転
+void min(stack *storage, int *count){
+    int a;
+    a = pop(storage) * -1;
+    push(a, storage);
+    (*count)++;
+}
+
 
 int Valpolish(char *expr){
     int ans;
@@ -105,6 +111,7 @@ int Valpolish(char *expr){
     makenull(&storage);
 
     while(count < size){
+      printf("%c",expr[count]);
       if(isdigit(expr[count])){
           tmp = number(expr,&count);
           push(tmp,&storage);
@@ -129,6 +136,7 @@ int Valpolish(char *expr){
       }
       else{
           printf("error\n");
+
           exit(1);
       }
     }

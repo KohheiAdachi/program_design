@@ -6,7 +6,7 @@ void makenull(stack *s){
 }
 //要素ｘをスタックにpushする
 void push(int x,stack *s){
-  s->elements[s->top]=x;
+  s->elements[s->top] = x;
   s->top++;
   return;
 }
@@ -17,10 +17,10 @@ int pop(stack *s){
 }
 //スタックが空かどうかを判定する
 int isempty(stack *s){
-  if(s->top>1){
+  if(s->top > 1){
     return 0;
   }
   else{
-    return -1;
+    return 1;
   }
 }

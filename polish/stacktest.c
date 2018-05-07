@@ -13,6 +13,6 @@ int main(void){
   while(!isempty(&a))
     printf("%d\n",pop(&a) );
 
-    return 0;
+  return 0;
 
 }
