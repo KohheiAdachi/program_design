@@ -4,20 +4,13 @@
 #include <stdlib.h>
 
 #include "stack.h"
-/*
+
 int num1(char n){
   int num;
   num = atoi(&n);
 
   return num;
 }
-*/
-
-int num1(char n){
-
-  return(n - '0');
-}
-
 int number(char *expr,int *next){
   int value;
 
