@@ -14,7 +14,8 @@ int number(char *expr,int *next){
 
   if(!isdigit(expr[*next])){
     return -1;
-  }else{
+  }
+  else{
     value = num1(expr[*next]);
     (*next)++;
     while(isdigit(expr[*next])){
@@ -73,15 +74,40 @@ void min(stack *storage, int *count){
 }
 
 
-int Valpolish(char *EXPR){
-    int temp,ans,count = 0;
-    int size = strlen(EXPR);
+int Valpolish(char *expr){
+    int ans,count = 0,tmp;
+    int size = strlen(expr);
     stack storage;
     makenull(&storage);
 
     while(count < size){
-      if(isdigit(EXPR[count])){
+      if(isdigit(expr[count])){
 
+        tmp = number(expr,&count);
+
+        push(tmp,&storage);
+      }
+      else if(expr[count] == '+'){
+        add(&storage,&count);
+      }
+      else if(expr[count] == '-'){
+        sub(&storage,&count);
+      }
+      else if(expr[count] == '*'){
+        mul(&storage,&count);
+      }
+      else if(expr[count] == '/'){
+        division(&storage,&count);
+      }
+      else if(expr[count] == 'm'){
+        min(&storage,&count);
+      }
+      else if(expr[count] == ','){
+        count++;
+      }
+      else{
+        printf("error\n");
+        return -1;
       }
     }
 
