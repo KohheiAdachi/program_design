@@ -4,18 +4,18 @@
 #include <stdlib.h>
 
 #include "stack.h"
-
+//数字１文字の文字列型からint型に変換
 int num1(char n){
   int num;
   num = atoi(&n);
-
   return num;
 }
+//文字列型の数字ををint型に変換
 int number(char *expr,int *next){
   int value;
 
   if(!isdigit(expr[*next])){
-
+    printf("error\n");
     exit(1);
   }
   else{
@@ -23,7 +23,7 @@ int number(char *expr,int *next){
     (*next)++;
     //２桁以上の整数
     while(isdigit(expr[*next])){
-      //valueの計算
+      //２桁以上の整数の処理
       value = value * 10;
       value = num1(expr[*next]);
       (*next)++;
@@ -32,18 +32,19 @@ int number(char *expr,int *next){
       return value;
     }
     else{
-      printf("カンマエラー\n");
+      printf("Comma error\n");
       exit(1);
     }
   }
 }
+//スタックから2要素を取り出す
 void storage_2pop(stack *storage,int *pop_element){
     int i;
     //2要素を取り出すかスタックが空になるまでスタックから要素を取り出す
     for (i = 0; i < 2 && !isempty(storage); i++) {
       pop_element[i] = pop(storage);
     }
-
+    //スタックが空か2要素取り出せない場合エラー
     if(isempty(storage) && i < 2){
       printf("error\n");
       exit(1);
@@ -95,20 +96,19 @@ void min(stack *storage, int *count){
     (*count)++;
 }
 
-
+//逆ポーランド式計算
 int Valpolish(char *expr){
     int ans;
-    int tmp;
     int count = 0;
     int size = strlen(expr);
     stack storage;
+    //スタックを空にする
     makenull(&storage);
 
     while(count < size){
-      //printf("%c",expr[count]);
       if(isdigit(expr[count])){
-          tmp = number(expr,&count);
-          push(tmp,&storage);
+          //スタックにプッシュする
+          push(number(expr,&count),&storage);
       }
       else if(expr[count] == '+'){
           add(&storage,&count);
@@ -134,9 +134,9 @@ int Valpolish(char *expr){
           exit(1);
       }
     }
-
+    //スタックに残っている最後に1つを取り出す．
     ans = pop(&storage);
-
+    //スタックを取り出して，スタックが空でない場合エラー
     if(!isempty(&storage)){
       printf("error\n");
       exit(1);
