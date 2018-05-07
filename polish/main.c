@@ -18,9 +18,19 @@ int number(char *expr,int *next){
   else{
     value = num1(expr[*next]);
     (*next)++;
+    //２桁以上の整数
     while(isdigit(expr[*next])){
       //valueの計算
+      value = value * 10;
+      value = num1(expr[*next]);
       (*next)++;
+    }
+    if(expr[*next] == ','){
+      return value;
+    }
+    else{
+      printf("カンマエラー\n");
+      exit(1);
     }
     return value;
   }
@@ -72,55 +82,70 @@ void min(stack *storage, int *count){
     push(a, storage);
     (*count)++;
 }
+void storage_2pop(stack *storage,int *pop_element){
+    int i;
 
+    //2要素を取り出すかスタックが空になるまでスタックから要素を取り出す
+    for (i = 0; i < 2 && !isempty(storage); i++) {
+      pop_element[i] = pop(storage);
+    }
+
+    if(isempty(storage) && i < 2){
+      printf("error\n");
+      exit(1);
+    }
+}
 
 int Valpolish(char *expr){
-    int ans,count = 0,tmp;
+    int ans;
+    int tmp;
+    int count = 0;
     int size = strlen(expr);
     stack storage;
     makenull(&storage);
 
     while(count < size){
       if(isdigit(expr[count])){
-
-        tmp = number(expr,&count);
-
-        push(tmp,&storage);
+          tmp = number(expr,&count);
+          push(tmp,&storage);
       }
       else if(expr[count] == '+'){
-        add(&storage,&count);
+          add(&storage,&count);
       }
       else if(expr[count] == '-'){
-        sub(&storage,&count);
+          sub(&storage,&count);
       }
       else if(expr[count] == '*'){
-        mul(&storage,&count);
+          mul(&storage,&count);
       }
       else if(expr[count] == '/'){
-        division(&storage,&count);
+          division(&storage,&count);
       }
       else if(expr[count] == 'm'){
-        min(&storage,&count);
+          min(&storage,&count);
       }
       else if(expr[count] == ','){
-        count++;
+          count++;
       }
       else{
-        printf("error\n");
-        return -1;
+          printf("error\n");
+          exit(1);
       }
     }
 
+    ans = pop(&storage);
 
-
-
-
+    if(!isempty(&storage)){
+      printf("error\n");
+      exit(1);
+    }
+    return ans;
 }
 int main(int argc, char *argv[]){
   int ans;
 
   //入力された逆ポーランド式を計算
-  printf("expression = ?");
+  printf("Polish Notation= ?\n");
   ans = Valpolish(argv[1]);
   printf("%d\n",ans );
 
