@@ -13,7 +13,7 @@ void push(int x,stack *s){
 //スタックのtop要素をpopする
 int pop(stack *s){
   s->top--;
-  return(s->elements[s->top])
+  return(s->elements[s->top]);
 }
 //スタックが空かどうかを判定する
 int isempty(stack *s){

@@ -8,11 +8,11 @@ int main(void){
   makenull(&a);
   push(1, &a);
   push(2, &a);
-  push(3. &a);
+  push(3, &a);
 
   while(!isempty(&a))
     printf("%d\n",pop(&a) );
 
     return 0;
-    
+
 }
