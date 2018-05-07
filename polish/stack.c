@@ -17,10 +17,10 @@ int pop(stack *s){
 }
 //スタックが空かどうかを判定する
 int isempty(stack *s){
-  if(s->top > 1){
-    return 0;
+  if(s->top < 1){
+    return 1;
   }
   else{
-    return 1;
+    return 0;
   }
 }
