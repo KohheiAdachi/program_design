@@ -2,6 +2,7 @@
 #include <ctype.h>
 #include <string.h>
 #include <stdlib.h>
+
 #include "stack.h"
 
 int num1(char n){
@@ -27,7 +28,7 @@ int number(char *expr,int *next){
 //加算
 void add(stack *storage, int *count){
     int a[2];
-    storage_2acq(storage, a);
+    //storage_2acq(storage, a);
     //printf("add%d\n",a[1]+a[0]);
     push(a[1] + a[0], storage);
     (*count)++;
@@ -36,7 +37,7 @@ void add(stack *storage, int *count){
 //減算
 void sub(stack *storage, int *count){
     int a[2];
-    storage_2acq(storage, a);
+  //  storage_2acq(storage, a);
     //printf("sub%d\n",a[1]-a[0]);
     push(a[1] - a[0], storage);
     (*count)++;
@@ -44,9 +45,9 @@ void sub(stack *storage, int *count){
 }
 
 //乗算
-void multi(stack *storage, int *count){
+void mul(stack *storage, int *count){
     int a[2];
-    storage_2acq(storage, a);
+  //  storage_2acq(storage, a);
     //printf("multi%d\n",a[1]*a[0]);
     push(a[1] * a[0], storage);
     (*count)++;
@@ -56,7 +57,7 @@ void multi(stack *storage, int *count){
 //除算
 void division(stack *storage, int *count){
     int a[2];
-    storage_2acq(storage, a);
+  //  storage_2acq(storage, a);
     //printf("division%d\n",a[1]/a[0]);
     push(a[1] / a[0], storage);
     (*count)++;
@@ -64,7 +65,7 @@ void division(stack *storage, int *count){
 }
 
 //符号を反転
-void minus(stack *storage, int *count){
+void min(stack *storage, int *count){
     int a;
     a = pop(storage) * -1;
     push(a, storage);
@@ -72,11 +73,31 @@ void minus(stack *storage, int *count){
 }
 
 
-int valpolish(char *expr){
+int Valpolish(char *EXPR){
+    int temp,ans,count = 0;
+    int size = strlen(EXPR);
+    stack storage;
+    makenull(&storage);
+
+    while(count < size){
+      if(isdigit(EXPR[count])){
+
+      }
+    }
+
+
+
+
 
 }
 int main(int argc, char *argv[]){
+  int ans;
 
+  //入力された逆ポーランド式を計算
+  printf("expression = ?");
+  ans = Valpolish(argv[1]);
+  printf("%d\n",ans );
 
+  return 0;
 
 }
