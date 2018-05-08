@@ -69,7 +69,6 @@ void add(stack *storage, int *count){
 void sub(stack *storage, int *count){
     int a[2];
     storage_2pop(storage, a);
-
     push(a[1] - a[0], storage);
     (*count)++;
 }
@@ -132,16 +131,17 @@ int Valpolish(char *expr){
           count++;
       }
       else{
-          printf("error\n");
+          error("str error\n");
 
           return 0;
       }
     }
     //スタックに残っている最後に1つを取り出す．
     ans = pop(&storage);
+    printf("%d",ans);
     //スタックを取り出して，スタックが空でない場合エラー
     if(!isempty(&storage)){
-      printf("error\n");
+      error("stack error\n");
       return 0;
     }
     return ans;
