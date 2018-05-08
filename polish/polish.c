@@ -4,6 +4,12 @@
 #include <stdlib.h>
 
 #include "stack.h"
+int ERR = 0;
+void error(char *m)
+{
+    ERR = 1;
+    fprintf(stderr, "%s\n", m);
+}
 //数字１文字の文字列型からint型に変換
 int num1(char n){
   int num;
@@ -147,7 +153,7 @@ int main(){
     //入力された逆ポーランド式を計算
     printf("Expression = ? ");
     fgets(str,200,stdin);
-    //ans = Valpolish(str);
+    ans = Valpolish(str);
     printf("Value = %d\n",ans);
     }while(str[0] != '\n');
 
