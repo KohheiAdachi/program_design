@@ -147,9 +147,9 @@ int main(){
     //入力された逆ポーランド式を計算
     printf("Expression = ? ");
     fgets(str,200,stdin);
-    ans = Valpolish(str);
+    //ans = Valpolish(str);
     printf("Value = %d\n",ans);
-  }while(str[0] == '\n');
+    }while(str[0] != '\n');
 
   return 0;
 
