@@ -66,7 +66,6 @@ void sub(stack *storage, int *count){
 
     push(a[1] - a[0], storage);
     (*count)++;
-
 }
 
 //乗算
@@ -75,7 +74,6 @@ void mul(stack *storage, int *count){
     storage_2pop(storage, a);
     push(a[1] * a[0], storage);
     (*count)++;
-
 }
 
 //除算
@@ -85,7 +83,6 @@ void division(stack *storage, int *count){
     //printf("division%d\n",a[1]/a[0]);
     push(a[1] / a[0], storage);
     (*count)++;
-
 }
 
 //符号を反転
