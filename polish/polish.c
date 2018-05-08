@@ -22,6 +22,7 @@ int number(char *expr,int *next){
 
   if(!isdigit(expr[*next])){
     printf("error\n");
+    return 0;
   }
   else{
     value = num1(expr[*next]);
@@ -38,7 +39,7 @@ int number(char *expr,int *next){
     }
     else{
       printf("Comma error\n");
-      exit(1);
+      return 0;
     }
   }
 }
@@ -52,7 +53,7 @@ void storage_2pop(stack *storage,int *pop_element){
     //スタックが空か2要素取り出せない場合エラー
     if(isempty(storage) && i < 2){
       printf("error\n");
-      exit(1);
+      return ;
     }
 
 }
@@ -107,7 +108,7 @@ int Valpolish(char *expr){
     //スタックを空にする
     makenull(&storage);
 
-    while(count < size){
+    while(count < size && ERR != 1){
       if(isdigit(expr[count])){
           //スタックにプッシュする
           push(number(expr,&count),&storage);
@@ -133,7 +134,7 @@ int Valpolish(char *expr){
       else{
           printf("error\n");
 
-          exit(1);
+          return 0;
       }
     }
     //スタックに残っている最後に1つを取り出す．
@@ -141,7 +142,7 @@ int Valpolish(char *expr){
     //スタックを取り出して，スタックが空でない場合エラー
     if(!isempty(&storage)){
       printf("error\n");
-      exit(1);
+      return 0;
     }
     return ans;
 }
