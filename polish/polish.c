@@ -96,7 +96,7 @@ void min(stack *storage, int *count){
 int Valpolish(char *expr){
     int ans;
     int count = 0;
-    int size = strlen(expr);
+    int size = strlen(expr) - 1;
     stack storage;
     //スタックを空にする
     makenull(&storage);
@@ -139,6 +139,7 @@ int Valpolish(char *expr){
     }
     return ans;
 }
+
 int main(){
   int ans;
   char str[100];
@@ -146,9 +147,8 @@ int main(){
     //入力された逆ポーランド式を計算
     printf("Expression = ? ");
     fgets(str,200,stdin);
-    printf("%s",str);
     ans = Valpolish(str);
-    printf("%d\n",ans);
+    printf("Value = %d\n",ans);
   }while(str[0] == '\n');
 
   return 0;
