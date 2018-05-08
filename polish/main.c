@@ -25,7 +25,7 @@ int number(char *expr,int *next){
     while(isdigit(expr[*next])){
       //２桁以上の整数の処理
       value = value * 10;
-      value = num1(expr[*next]);
+      value += num1(expr[*next]);
       (*next)++;
     }
     if(expr[*next] == ','){

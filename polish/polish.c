@@ -21,7 +21,7 @@ int number(char *expr,int *next){
   int value;
 
   if(!isdigit(expr[*next])){
-    printf("error\n");
+    error("numebr error");
     return 0;
   }
   else{
@@ -31,14 +31,14 @@ int number(char *expr,int *next){
     while(isdigit(expr[*next])){
       //２桁以上の整数の処理
       value = value * 10;
-      value = num1(expr[*next]);
+      value += num1(expr[*next]);
       (*next)++;
     }
     if(expr[*next] == ','){
       return value;
     }
     else{
-      printf("Comma error\n");
+      error("Comma error");
       return 0;
     }
   }
@@ -52,7 +52,7 @@ void storage_2pop(stack *storage,int *pop_element){
     }
     //スタックが空か2要素取り出せない場合エラー
     if(isempty(storage) && i < 2){
-      printf("error\n");
+      error("stack empty error");
       return ;
     }
 
@@ -155,7 +155,10 @@ int main(){
     printf("Expression = ? ");
     fgets(str,200,stdin);
     ans = Valpolish(str);
-    printf("Value = %d\n",ans);
+    if(ERR == 0 && str[0] != '\n')
+      printf("Value = %d\n",ans);
+    else
+      ERR = 0;
     }while(str[0] != '\n');
 
   return 0;
