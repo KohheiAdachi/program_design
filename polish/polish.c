@@ -138,7 +138,7 @@ int Valpolish(char *expr){
     }
     //スタックに残っている最後に1つを取り出す．
     ans = pop(&storage);
-    printf("%d",ans);
+  //  printf("%d",ans);
     //スタックを取り出して，スタックが空でない場合エラー
     if(!isempty(&storage)){
       error("stack error\n");
