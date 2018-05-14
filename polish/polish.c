@@ -182,7 +182,7 @@ int main(){
       ans = Valpolish(str);
     }
     //ERRが0の時Valueを表示
-    if(ERR == 0){
+    if(ERR == 0 && str[0] != '\n'){
       printf("Value = %d\n",ans);
     }
     else{
