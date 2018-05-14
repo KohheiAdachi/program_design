@@ -27,9 +27,8 @@ int number(char *expr,int *next){
   else{
     value = num1(expr[*next]);
     (*next)++;
-    //２桁以上の整数
+    //2桁以上の整数
     while(isdigit(expr[*next])){
-      //２桁以上の整数の処理
       value = value * 10;
       value += num1(expr[*next]);
       (*next)++;
@@ -44,7 +43,7 @@ int number(char *expr,int *next){
   }
 }
 //スタックから2要素を取り出す
-void storage_2pop(stack *storage,int *pop_element){
+int storage_2pop(stack *storage,int *pop_element){
     int i;
     //2要素を取り出すかスタックが空になるまでスタックから要素を取り出す
     for (i = 0; i < 2 && !isempty(storage); i++) {
@@ -53,9 +52,9 @@ void storage_2pop(stack *storage,int *pop_element){
     //スタックが空か2要素取り出せない場合エラー
     if(isempty(storage) && i < 2){
       error("stack empty error");
-      return ;
+      return 1;
     }
-
+    return 0;
 }
 //加算
 void add(stack *storage, int *count){
@@ -132,13 +131,15 @@ int Valpolish(char *expr){
       }
       else{
           error("str error\n");
-
           return 0;
+      }
+
+      if(ERR){
+        return 0;
       }
     }
     //スタックに残っている最後に1つを取り出す．
     ans = pop(&storage);
-  //  printf("%d",ans);
     //スタックを取り出して，スタックが空でない場合エラー
     if(!isempty(&storage)){
       error("stack error\n");
