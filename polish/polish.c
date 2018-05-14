@@ -100,7 +100,7 @@ void division(stack *storage, int *count){
 void min(stack *storage, int *count){
     int a;
     if(isempty(storage)){
-      error("stack error");
+      error("stack empty error");
       return;
     }
     a = pop(storage) * -1;
@@ -145,7 +145,7 @@ int Valpolish(char *expr){
           count++;
       }
       else{
-          error("str error\n");
+          error("undefined character");
           return 0;
       }
 
@@ -159,12 +159,12 @@ int Valpolish(char *expr){
       ans = pop(&storage);
     }
     else if(isempty(&storage)){
-      error("stack is empty\n");
+      error("stack is empty");
       return 0;
     }
     //スタックを取り出して，スタックが空でない場合エラー
     if(!isempty(&storage)){
-      error("Too many operands, or missing operators\n");
+      error("Too many operands, or missing operators");
       return 0;
     }
     return ans;
@@ -180,12 +180,12 @@ int main(){
     if(str[0] != '\n'){
       ans = Valpolish(str);
     }
+
+    if(ERR == 0){
+      printf("Value = %d\n",ans);
+    }
     else{
       ERR = 0;
-    }
-    if(ERR == 0){
-      printf("ERR:%d\n",ERR);
-      printf("Value = %d\n",ans);
     }
     }while(str[0] != '\n');
 
