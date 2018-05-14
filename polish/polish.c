@@ -21,7 +21,7 @@ int number(char *expr,int *next){
   int value;
 
   if(!isdigit(expr[*next])){
-    error("numebr error");
+    error("number error");
     return 0;
   }
   else{
@@ -33,13 +33,9 @@ int number(char *expr,int *next){
       value += num1(expr[*next]);
       (*next)++;
     }
-    if(expr[*next] == ','){
-      return value;
-    }
-    else{
-      error("Comma error");
-      return 0;
-    }
+
+
+    return value;
   }
 }
 //スタックから2要素を取り出す
@@ -52,46 +48,61 @@ int storage_2pop(stack *storage,int *pop_element){
     //スタックが空か2要素取り出せない場合エラー
     if(isempty(storage) && i < 2){
       error("stack empty error");
-      return 1;
+      return 0;
     }
-    return 0;
+    return 1;
 }
 //加算
 void add(stack *storage, int *count){
     int a[2];
-    storage_2pop(storage, a);
+    int check;
+    check = storage_2pop(storage,a);
+    if(check == 1){
     push(a[1] + a[0], storage);
+  }
     (*count)++;
 }
 
 //減算
 void sub(stack *storage, int *count){
     int a[2];
-    storage_2pop(storage, a);
+    int check;
+    check = storage_2pop(storage,a);
+    if(check == 1){
     push(a[1] - a[0], storage);
+  }
     (*count)++;
 }
 
 //乗算
 void mul(stack *storage, int *count){
     int a[2];
-    storage_2pop(storage, a);
+    int check;
+    check = storage_2pop(storage, a);
+    if(check == 1){
     push(a[1] * a[0], storage);
+  }
     (*count)++;
 }
 
 //除算
 void division(stack *storage, int *count){
     int a[2];
-    storage_2pop(storage, a);
-    //printf("division%d\n",a[1]/a[0]);
+    int check;
+    check = storage_2pop(storage,a);
+    if(check == 1){
     push(a[1] / a[0], storage);
+  }
     (*count)++;
 }
 
 //符号を反転
 void min(stack *storage, int *count){
     int a;
+    if(isempty(storage)){
+      error("stack error\n");
+      return;
+    }
     a = pop(storage) * -1;
     push(a, storage);
     (*count)++;
@@ -133,16 +144,24 @@ int Valpolish(char *expr){
           error("str error\n");
           return 0;
       }
-
+      if(expr[count] == ',' || !(count < size)){
+          count++;
+      }
       if(ERR){
         return 0;
       }
     }
-    //スタックに残っている最後に1つを取り出す．
-    ans = pop(&storage);
+    //スタックに残っている最後に1つを取り出す
+    if(!isempty(&storage)){
+      ans = pop(&storage);
+    }
+    else if(isempty(&storage)){
+      error("stack is empty\n");
+      return 0;
+    }
     //スタックを取り出して，スタックが空でない場合エラー
     if(!isempty(&storage)){
-      error("stack error\n");
+      error("Too many operands, or missing operators\n");
       return 0;
     }
     return ans;
