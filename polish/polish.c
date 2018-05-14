@@ -100,7 +100,7 @@ void division(stack *storage, int *count){
 void min(stack *storage, int *count){
     int a;
     if(isempty(storage)){
-      error("stack error\n");
+      error("stack error");
       return;
     }
     a = pop(storage) * -1;
@@ -140,16 +140,19 @@ int Valpolish(char *expr){
       else if(expr[count] == ','){
           count++;
       }
+
+      if(expr[count] == ',' || !(count < size)){
+          count++;
+      }
       else{
           error("str error\n");
           return 0;
       }
-      if(expr[count] == ',' || !(count < size)){
-          count++;
-      }
+
       if(ERR){
         return 0;
       }
+
     }
     //スタックに残っている最後に1つを取り出す
     if(!isempty(&storage)){
@@ -174,12 +177,15 @@ int main(){
     //入力された逆ポーランド式を計算
     printf("Expression = ? ");
     fgets(str,200,stdin);
-    if(ERR == 0 && str[0] != '\n'){
+    if(str[0] != '\n'){
       ans = Valpolish(str);
-      printf("Value = %d\n",ans);
     }
     else{
       ERR = 0;
+    }
+    if(ERR == 0){
+      printf("ERR:%d\n",ERR);
+      printf("Value = %d\n",ans);
     }
     }while(str[0] != '\n');
 
