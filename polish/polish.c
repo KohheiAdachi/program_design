@@ -177,10 +177,11 @@ int main(){
     //入力された逆ポーランド式を計算
     printf("Expression = ? ");
     fgets(str,200,stdin);
+    //文字の最初の文字が改行コードでない時
     if(str[0] != '\n'){
       ans = Valpolish(str);
     }
-
+    //ERRが0の時Valueを表示
     if(ERR == 0){
       printf("Value = %d\n",ans);
     }
