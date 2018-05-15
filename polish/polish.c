@@ -116,7 +116,10 @@ int Valpolish(char *expr){
     stack storage;
     //スタックを空にする
     makenull(&storage);
-
+    if(expr[size -1 ] == ','){
+      error("Too many operands, or missing operators");
+      return 0;
+    }
     while(count < size && ERR != 1){
       if(isdigit(expr[count])){
           //スタックにプッシュする
@@ -137,13 +140,18 @@ int Valpolish(char *expr){
       else if(expr[count] == 'm'){
           min(&storage,&count);
       }
-      else if(expr[count] == ','){
+      else if(expr[count] == ',' && (count < size)){
           count++;
+      }
+
+      else if(expr[size] == ','){
+        error("Too many operands, or missing operators");
       }
 
       if(expr[count] == ',' || !(count < size)){
           count++;
       }
+
       else{
           error("undefined character");
           return 0;
