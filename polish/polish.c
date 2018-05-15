@@ -144,11 +144,6 @@ int Valpolish(char *expr){
       else if(expr[count] == ',' && (count < size)){
           count++;
       }
-
-      else if(expr[size] == ','){
-        error("Too many operands, or missing operators");
-      }
-
       if(expr[count] == ',' || !(count < size)){
           count++;
       }
