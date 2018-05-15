@@ -116,7 +116,8 @@ int Valpolish(char *expr){
     stack storage;
     //スタックを空にする
     makenull(&storage);
-    if(expr[size -1 ] == ','){
+    //終端が','だったときにエラー
+    if(expr[size-1] == ','){
       error("Too many operands, or missing operators");
       return 0;
     }
