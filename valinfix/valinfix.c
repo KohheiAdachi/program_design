@@ -10,7 +10,7 @@ void error(char *expr,int p,char *message){
   int i;
 
   fprintf(stderr, "%s\n",expr); //式を表示
-  for(i = 0; i < p; i++) putc(' ',stderr);　//エラーが見つかった位置を表示
+  for(i = 0; i < p; i++) putc(' ',stderr);//エラーが見つかった位置を表示
   putc('^',stderr);putc('\n',stderr); //エラーメッセージを表示
   fprintf(stderr, "error:%s\n", message); //エラーフラグをセット
   ERR = 1;
@@ -25,7 +25,8 @@ int number(char *expr,int *p){
   int value;
   if(!isdigit(expr[*p])){
     error(expr,*p,"数が必要");
-  }else{
+  }
+  else{
     value = num1(expr[*p]);
     (*p)++;
     while(isdigit(expr[*p])){
@@ -47,7 +48,13 @@ int valfix0(char *expr,int *p){
     (*p)++;
     if(expr[*p] == '-'){
       //単項演算の処理をする
-    } else{
+      (*p)++;
+      x = valfix0(expr,p) * -1;
+      if(expr[*p] != ')'){
+        error(expr,*p,"括弧の対応ができてない");
+      }
+    }
+    else{
       x = valfix0(expr,p);
       op = expr[*p];
       if ((op != '+' && (op != '-') && (op != '*') && (op != '/'))){
@@ -63,7 +70,7 @@ int valfix(char *expr){
   int p;
 
   p = 0;
-  ERR = O;  //エラーをリセット
+  ERR = 0;  //エラーをリセット
   return valfix0(expr,&p);
 }
 int main(int argc,char *argv[]){
