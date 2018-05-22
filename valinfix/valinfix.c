@@ -67,7 +67,7 @@ int valfix0(char *expr,int *p){
         error(expr,*p,"演算子が必要");
       }
       //2項演算の処理をする
-      else if(op == "+"){
+      else if(op == '+'){
         (*p)++;
         y = valfix0(expr,p);
         x += y;
@@ -75,7 +75,7 @@ int valfix0(char *expr,int *p){
           error(expr,*p,"括弧の対応が取れてない");
         }
       }
-      else if (op == "-"){
+      else if (op == '-'){
         (*p)++;
         y = valfix0(expr,p);
         x -= y;
@@ -83,7 +83,7 @@ int valfix0(char *expr,int *p){
           error(expr,*p,"括弧の対応が取れてない");
         }
       }
-      else if (op == "*"){
+      else if (op == '*'){
         (*p)++;
         y = valfix0(expr,p);
         x *= y;
@@ -91,7 +91,7 @@ int valfix0(char *expr,int *p){
           error(expr,*p,"括弧の対応が取れてない");
         }
       }
-      else if (op == "/"){
+      else if (op == '/'){
         (*p)++;
         y = valfix0(expr,p);
         x /= y;
@@ -109,6 +109,17 @@ int valfix(char *expr){
 
   p = 0;
   ERR = 0;  //エラーをリセット
+/*
+  ans = valfix0(expr,&p);
+  //入力式の最後(\n)まで見れているかチェック
+  if(expr[p] != '\n'){
+    error(expr, p, "括弧の対応が取れてない");
+  }
+  else{
+    return ans;
+  }
+*/
+
   return valfix0(expr,&p);
 }
 int main(int argc,char *argv[]){
