@@ -23,9 +23,11 @@ int num1(char n){
 /*数の処理*/
 int number(char *expr,int *p){
   int value;
+
   if(!isdigit(expr[*p])){
     error(expr,*p,"数が必要");
   }
+  //数字が続くまでループする
   else{
     value = num1(expr[*p]);
     (*p)++;
@@ -51,7 +53,11 @@ int valfix0(char *expr,int *p){
       (*p)++;
       x = valfix0(expr,p) * -1;
       if(expr[*p] != ')'){
-        error(expr,*p,"括弧の対応ができてない");
+        error(expr,*p,"括弧の対応が取れてない");
+      }
+      else{
+        (*p)++;
+        return x;
       }
     }
     else{
@@ -59,9 +65,41 @@ int valfix0(char *expr,int *p){
       op = expr[*p];
       if ((op != '+' && (op != '-') && (op != '*') && (op != '/'))){
         error(expr,*p,"演算子が必要");
-      }else{
-        //2項演算の処理をする
       }
+      //2項演算の処理をする
+      else if(op == "+"){
+        (*p)++;
+        y = valfix0(expr,p);
+        x += y;
+        if(expr[*p] != ')'){
+          error(expr,*p,"括弧の対応が取れてない");
+        }
+      }
+      else if (op == "-"){
+        (*p)++;
+        y = valfix0(expr,p);
+        x -= y;
+        if(expr[*p] != ')'){
+          error(expr,*p,"括弧の対応が取れてない");
+        }
+      }
+      else if (op == "*"){
+        (*p)++;
+        y = valfix0(expr,p);
+        x *= y;
+        if(expr[*p] != ')'){
+          error(expr,*p,"括弧の対応が取れてない");
+        }
+      }
+      else if (op == "/"){
+        (*p)++;
+        y = valfix0(expr,p);
+        x /= y;
+        if(expr[*p] != ')'){
+          error(expr,*p,"括弧の対応が取れてない");
+        }
+      }
+
     }//2項演算
   }//括弧で囲まれた式
 }
