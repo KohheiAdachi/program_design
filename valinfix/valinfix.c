@@ -35,6 +35,12 @@ int number(char *expr,int *p){
       value = value * 10 + num1(expr[*p]);
       (*p)++;
     }
+    if((expr[*p]) == '\n' || (expr[*p] == '(') || (expr[*p] == ')') || (expr[*p] == '+') || (expr[*p] == '-') || (expr[*p] == '*') || (expr[*p] == '/')){
+        return value;
+    }
+    else{
+      error(expr,*p,"未定義の文字");
+    }
   }
   return value;
 }
@@ -127,13 +133,13 @@ int valinfix0(char *expr,int *p){
   return 0;
 }
 
-int valfix(char *expr){
-  int p;
+int valinfix(char *expr){
+  int p,ans;
 
   p = 0;
   ERR = 0;  //エラーをリセット
-  return valinfix0(expr,&p);
-/*
+
+
   ans = valinfix0(expr,&p);
   //入力式の最後(\n)まで見れているかチェック
   if(expr[p] != '\n'){
@@ -142,8 +148,8 @@ int valfix(char *expr){
   else{
     return ans;
   }
-*/
 
+  return valinfix0(expr,&p);
 }
 int main(int argc,char *argv[]){
   char expr[MAXLENGTH];
@@ -151,8 +157,10 @@ int main(int argc,char *argv[]){
 
   fprintf(stderr, "Expression = ");
   while((fgets(expr,MAXLENGTH,stdin) != NULL) && (expr[0] != '\n')){
-    val = valfix(expr);
-    if(!ERR) printf("Value = %d",val);
+    val = valinfix(expr);
+    if(!ERR){
+      printf("Value = %d\n",val);
+    }
     fprintf(stderr, "Expression = ");
   }
   return 0;
