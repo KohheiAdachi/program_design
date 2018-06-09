@@ -40,68 +40,91 @@ int number(char *expr,int *p){
 }
 /*式の処理(再帰処理)*/
 
-int valfix0(char *expr,int *p){
+int valinfix0(char *expr,int *p){
   int x,y; //部分式の評価結果
   char op; //演算子
 
-  if(expr[*p] != '(')
+  if(expr[*p] != '(') /*単純な数*/
     return number(expr,p);
   else {
     (*p)++;
-    if(expr[*p] == '-'){
-      //単項演算の処理をする
-      (*p)++;
-      x = valfix0(expr,p) * -1;
-      if(expr[*p] != ')'){
-        error(expr,*p,"括弧の対応が取れてない");
+      if(expr[*p] == '-'){
+        //単項演算の処理をする
+        (*p)++;
+        x = valinfix0(expr,p) * -1;
+        if(expr[*p] == ')'){
+          (*p)++;
+          return x;
+        }
+        else{
+          error(expr,*p,"括弧の対応が取れてない");
+        }
+      }
+    else{
+      x = valinfix0(expr,p);
+      op = expr[*p];
+      if ((op != '+' && (op != '-') && (op != '*') && (op != '/'))){
+        error(expr,*p,"演算子が必要");
       }
       else{
         (*p)++;
         return x;
       }
-    }
-    else{
-      x = valfix0(expr,p);
-      op = expr[*p];
-      if ((op != '+' && (op != '-') && (op != '*') && (op != '/'))){
-        error(expr,*p,"演算子が必要");
-      }
       //2項演算の処理をする
-      else if(op == '+'){
+      if(op == '+'){
         (*p)++;
-        y = valfix0(expr,p);
+        y = valinfix0(expr,p);
         x += y;
-        if(expr[*p] != ')'){
+        if(expr[*p] == ')'){
+          (*p)++;
+          return x;
+        }
+        else{
           error(expr,*p,"括弧の対応が取れてない");
         }
       }
       else if (op == '-'){
         (*p)++;
-        y = valfix0(expr,p);
+        y = valinfix0(expr,p);
         x -= y;
-        if(expr[*p] != ')'){
+        if(expr[*p] == ')'){
+          (*p)++;
+          return x;
+        }
+        else{
           error(expr,*p,"括弧の対応が取れてない");
         }
       }
       else if (op == '*'){
         (*p)++;
-        y = valfix0(expr,p);
+        y = valinfix0(expr,p);
         x *= y;
-        if(expr[*p] != ')'){
+        if(expr[*p] == ')'){
+          (*p)++;
+          return x;
+        }
+        else{
           error(expr,*p,"括弧の対応が取れてない");
         }
       }
       else if (op == '/'){
         (*p)++;
-        y = valfix0(expr,p);
+        y = valinfix0(expr,p);
         x /= y;
-        if(expr[*p] != ')'){
+        if(expr[*p] == ')'){
+          (*p)++;
+          return x;
+        }
+        else{
           error(expr,*p,"括弧の対応が取れてない");
         }
       }
-
-    }//2項演算
-  }//括弧で囲まれた式
+      else{
+        error(expr,*p,"演算子が必要");
+      }
+    }
+  }
+  return 0;
 }
 
 int valfix(char *expr){
@@ -109,8 +132,9 @@ int valfix(char *expr){
 
   p = 0;
   ERR = 0;  //エラーをリセット
+  return valinfix0(expr,&p);
 /*
-  ans = valfix0(expr,&p);
+  ans = valinfix0(expr,&p);
   //入力式の最後(\n)まで見れているかチェック
   if(expr[p] != '\n'){
     error(expr, p, "括弧の対応が取れてない");
@@ -120,7 +144,6 @@ int valfix(char *expr){
   }
 */
 
-  return valfix0(expr,&p);
 }
 int main(int argc,char *argv[]){
   char expr[MAXLENGTH];
