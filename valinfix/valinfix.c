@@ -8,12 +8,13 @@ int ERR = 0; //エラーを見つけた時，1をセットする
 
 void error(char *expr,int p,char *message){
   int i;
-
+if(ERR == 0){
   fprintf(stderr, "%s\n",expr); //式を表示
   for(i = 0; i < p; i++) putc(' ',stderr);//エラーが見つかった位置を表示
   putc('^',stderr);putc('\n',stderr); //エラーメッセージを表示
   fprintf(stderr, "error:%s\n", message); //エラーフラグをセット
   ERR = 1;
+}
 }
 /*数字1文字を対応する0〜9の数に変換*/
 int num1(char n){
