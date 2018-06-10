@@ -22,7 +22,7 @@ int num1(char n){
 
 /*数の処理*/
 int number(char *expr,int *p){
-  int value;
+  int value = 0;
 
   if(!isdigit(expr[*p])){
     error(expr,*p,"数が必要");
@@ -73,9 +73,7 @@ int valinfix0(char *expr,int *p){
         error(expr,*p,"演算子が必要");
       }
       else{
-        (*p)++;
-        return x;
-      }
+
       //2項演算の処理をする
       if(op == '+'){
         (*p)++;
@@ -125,9 +123,7 @@ int valinfix0(char *expr,int *p){
           error(expr,*p,"括弧の対応が取れてない");
         }
       }
-      else{
-        error(expr,*p,"演算子が必要");
-      }
+    }
     }
   }
   return 0;
