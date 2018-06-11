@@ -36,6 +36,7 @@ int number(char *expr,int *p){
       value = value * 10 + num1(expr[*p]);
       (*p)++;
     }
+    //未定義の文字でエラーを出す
     if((expr[*p]) == '\n' || (expr[*p] == '(') || (expr[*p] == ')') || (expr[*p] == '+') || (expr[*p] == '-') || (expr[*p] == '*') || (expr[*p] == '/')){
         return value;
     }
@@ -55,8 +56,7 @@ int valinfix0(char *expr,int *p){
     return number(expr,p);
   else {
     (*p)++;
-      if(expr[*p] == '-'){
-        //単項演算の処理をする
+      if(expr[*p] == '-'){　/*単項演算*/
         (*p)++;
         x = valinfix0(expr,p) * -1;
         if(expr[*p] == ')'){
