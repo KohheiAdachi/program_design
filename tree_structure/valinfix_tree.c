@@ -5,28 +5,35 @@
 #define MAXLENGTH 100 //入力の最大長
 
 typedef struct _node{
-  enum {LEAF,INTERNAL} kind;
-  int value;
-  struct _node *leftchild,*rightchild;
-  char operater;
+  enum {LEAF,INTERNAL} kind; /*葉か内部かの区別(enumは列挙子)*/
+  int value;　/*値(葉のとき)*/
+  struct _node *leftchild,*rightchild; /*左の子，右の子(内部のとき)*/
+  char operater; /*演算子(内部のとき)*/
 }node,*tree;
-
+//葉を作る
 tree create_leaf(int v){
   tree t;
-  t = (tree)malloc(siziof(node));
+  t = (tree)malloc(sizeof(node)); /*メモリ割り当て(malloc)*/
   t->kind = LEAF;
   t->value = v;
   return t;
 }
-
+//内部ノードの作成
 tree create_internal(char op,tree sub1,tree sub2){
   tree t;
   t = (tree)malloc(sizeof(node));
   t->kind = INTERNAL;
   t->operater = op;
-  t->leftchild = sub1;
-  t->rightchild = sub2;
+  t->leftchild = sub1; //左
+  t->rightchild = sub2; //右
   return t;
+}
+//メモリーの解放
+void free_tree(tree t){
+  if(t==NULL) return;
+  if(t->leftchild != NULL) free_tree(t->leftchild);
+  if(t->rightchild != NULL) free_tree(t->rightchild);
+  free(t);
 }
 
 
@@ -48,7 +55,7 @@ int num1(char n){
 }
 
 /*数の処理*/
-int number(char *expr,int *p){
+tree number(char *expr,int *p){
   int value = 0;
 
   if(!isdigit(expr[*p])){
@@ -64,7 +71,7 @@ int number(char *expr,int *p){
     }
     //未定義の文字でエラーを出す
     if((expr[*p]) == '\n' || (expr[*p] == '(') || (expr[*p] == ')') || (expr[*p] == '+') || (expr[*p] == '-') || (expr[*p] == '*') || (expr[*p] == '/')){
-        return value;
+        return create_leaf(value);
     }
     else{
       error(expr,*p,"未定義の文字");
@@ -74,8 +81,10 @@ int number(char *expr,int *p){
 }
 /*式の処理(再帰処理)*/
 
-int valinfix0(char *expr,int *p){
-  int x,y; //部分式の評価結果
+tree infix_to_tree0(char *expr,int *p){
+  tree x,y; //部分式の評価結果
+  x = (tree)malloc(sizeof(node));
+  y = (tree)malloc(sizeof(node));
   char op; //演算子
 
   if(expr[*p] != '(') /*単純な数*/
@@ -84,70 +93,76 @@ int valinfix0(char *expr,int *p){
     (*p)++;
       if(expr[*p] == '-'){　/*単項演算*/
         (*p)++;
-        x = valinfix0(expr,p) * -1;
+        x = infix_to_tree0(expr,p);
         if(expr[*p] == ')'){
           (*p)++;
-          return x;
+          return create_internal("-",x,NULL);
         }
         else{
           error(expr,*p,"括弧の対応が取れてない");
+          return NULL
         }
       }
     else{
-      x = valinfix0(expr,p);
+      x = infix_to_tree0(expr,p);
       op = expr[*p];
       if ((op != '+' && (op != '-') && (op != '*') && (op != '/'))){
         error(expr,*p,"演算子が必要");
+        return NULL;
       }
       else{
 
       //2項演算の処理をする
       if(op == '+'){
         (*p)++;
-        y = valinfix0(expr,p);
-        x += y;
+        y = infix_to_tree0(expr,p);
+        //x += y;
         if(expr[*p] == ')'){
           (*p)++;
-          return x;
+          return create_leaf("+",x,y);
         }
         else{
           error(expr,*p,"括弧の対応が取れてない");
+          return NULL;
         }
       }
       else if (op == '-'){
         (*p)++;
-        y = valinfix0(expr,p);
-        x -= y;
+        y = infix_to_tree0(expr,p);
+        //x -= y;
         if(expr[*p] == ')'){
           (*p)++;
-          return x;
+          return create_leaf("-",x,y);
         }
         else{
           error(expr,*p,"括弧の対応が取れてない");
+          return NULL;
         }
       }
       else if (op == '*'){
         (*p)++;
-        y = valinfix0(expr,p);
-        x *= y;
+        y = infix_to_tree0(expr,p);
+        //x *= y;
         if(expr[*p] == ')'){
           (*p)++;
-          return x;
+          return create_leaf("*",x,y);
         }
         else{
           error(expr,*p,"括弧の対応が取れてない");
+          return NULL;
         }
       }
       else if (op == '/'){
         (*p)++;
-        y = valinfix0(expr,p);
-        x /= y;
+        y = infix_to_tree0(expr,p);
+        //x /= y;
         if(expr[*p] == ')'){
           (*p)++;
-          return x;
+          return create_leaf("/",x,y);
         }
         else{
           error(expr,*p,"括弧の対応が取れてない");
+          return NULL;
         }
       }
     }
@@ -156,14 +171,14 @@ int valinfix0(char *expr,int *p){
   return 0;
 }
 
-int valinfix(char *expr){
+tree infix_to_tree(char *expr){
   int p,ans;
 
   p = 0;
   ERR = 0;  //エラーをリセット
 
 
-  ans = valinfix0(expr,&p);
+  ans = infix_to_tree0(expr,&p);
   //入力式の最後(\n)まで見れているかチェック
   if(expr[p] != '\n'){
     error(expr, p, "括弧の対応が取れてない");
@@ -172,19 +187,23 @@ int valinfix(char *expr){
     return ans;
   }
 
-  return valinfix0(expr,&p);
+  return infix_to_tree0(expr,&p);
 }
 int main(int argc,char *argv[]){
   char expr[MAXLENGTH];
-  int val;
+  tree t;
 
-  fprintf(stderr, "Expression = ");
+
   while((fgets(expr,MAXLENGTH,stdin) != NULL) && (expr[0] != '\n')){
-    val = valinfix(expr);
+    t = infix_to_tree(expr);
     if(!ERR){
-      printf("Value = %d\n",val);
+      //preorder
+
+      //inorder
+
+      //postorder
     }
-    fprintf(stderr, "Expression = ");
+
   }
   return 0;
 }
