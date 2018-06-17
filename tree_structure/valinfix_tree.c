@@ -221,16 +221,17 @@ void inorder_list(tree t){
     inorder_list(t->leftchild);
   }
   //演算子
-  if(t->leftchild == NULL){
-    printf("(");
+  if(t->kind == INTERNAL){
+    if(t->leftchild == NULL){
+      printf("(");
+      printf("aaaaaaaaaaa");
+    }
+    printf("%c",t->operater);
   }
-  printf("%c",t->operater);
-
   //数値
-  if(t->kind == LEAF){
+  else if(t->kind == LEAF){
     printf("%d",t->value);
   }
-
   if(t->rightchild != NULL){
     inorder_list(t->rightchild);
     printf(")");
