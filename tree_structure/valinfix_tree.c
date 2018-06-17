@@ -4,9 +4,10 @@
 #include <stdlib.h>
 #define MAXLENGTH 100 //入力の最大長
 
+int ERR = 0; //エラーを見つけた時，1をセットする
 typedef struct _node{
   enum {LEAF,INTERNAL} kind; /*葉か内部かの区別(enumは列挙子)*/
-  int value;　/*値(葉のとき)*/
+  int value; /*値(葉のとき)*/
   struct _node *leftchild,*rightchild; /*左の子，右の子(内部のとき)*/
   char operater; /*演算子(内部のとき)*/
 }node,*tree;
@@ -37,7 +38,7 @@ void free_tree(tree t){
 }
 
 
-int ERR = 0; //エラーを見つけた時，1をセットする
+
 
 void error(char *expr,int p,char *message){
   int i;
@@ -77,7 +78,7 @@ tree number(char *expr,int *p){
       error(expr,*p,"未定義の文字");
     }
   }
-  return value;
+  return create_leaf(value);
 }
 /*式の処理(再帰処理)*/
 
@@ -91,16 +92,16 @@ tree infix_to_tree0(char *expr,int *p){
     return number(expr,p);
   else {
     (*p)++;
-      if(expr[*p] == '-'){　/*単項演算*/
+      if(expr[*p] == '-'){ /*単項演算*/
         (*p)++;
         x = infix_to_tree0(expr,p);
         if(expr[*p] == ')'){
           (*p)++;
-          return create_internal("-",x,NULL);
+          return create_internal('-',x,NULL);
         }
         else{
           error(expr,*p,"括弧の対応が取れてない");
-          return NULL
+          return NULL;
         }
       }
     else{
@@ -108,7 +109,6 @@ tree infix_to_tree0(char *expr,int *p){
       op = expr[*p];
       if ((op != '+' && (op != '-') && (op != '*') && (op != '/'))){
         error(expr,*p,"演算子が必要");
-        return NULL;
       }
       else{
 
@@ -119,11 +119,10 @@ tree infix_to_tree0(char *expr,int *p){
         //x += y;
         if(expr[*p] == ')'){
           (*p)++;
-          return create_leaf("+",x,y);
+          return create_internal('+',x,y);
         }
         else{
           error(expr,*p,"括弧の対応が取れてない");
-          return NULL;
         }
       }
       else if (op == '-'){
@@ -132,11 +131,11 @@ tree infix_to_tree0(char *expr,int *p){
         //x -= y;
         if(expr[*p] == ')'){
           (*p)++;
-          return create_leaf("-",x,y);
+          return create_internal('-',x,y);
         }
         else{
           error(expr,*p,"括弧の対応が取れてない");
-          return NULL;
+
         }
       }
       else if (op == '*'){
@@ -145,11 +144,11 @@ tree infix_to_tree0(char *expr,int *p){
         //x *= y;
         if(expr[*p] == ')'){
           (*p)++;
-          return create_leaf("*",x,y);
+          return create_internal('*',x,y);
         }
         else{
           error(expr,*p,"括弧の対応が取れてない");
-          return NULL;
+
         }
       }
       else if (op == '/'){
@@ -158,11 +157,11 @@ tree infix_to_tree0(char *expr,int *p){
         //x /= y;
         if(expr[*p] == ')'){
           (*p)++;
-          return create_leaf("/",x,y);
+          return create_internal('/',x,y);
         }
         else{
           error(expr,*p,"括弧の対応が取れてない");
-          return NULL;
+
         }
       }
     }
@@ -172,38 +171,119 @@ tree infix_to_tree0(char *expr,int *p){
 }
 
 tree infix_to_tree(char *expr){
-  int p,ans;
-
+  int p;
+  tree t;
   p = 0;
   ERR = 0;  //エラーをリセット
+  t = (tree)malloc(sizeof(node));
 
-
-  ans = infix_to_tree0(expr,&p);
+  t = infix_to_tree0(expr,&p);
   //入力式の最後(\n)まで見れているかチェック
   if(expr[p] != '\n'){
     error(expr, p, "括弧の対応が取れてない");
+    return NULL;
   }
   else{
-    return ans;
+    return t;
   }
 
-  return infix_to_tree0(expr,&p);
+  return NULL;
 }
+
+void preorder_list(tree t){
+  //演算子(内部)
+  if(t->kind == INTERNAL){
+    if(t->rightchild == NULL){
+      printf("m");
+    }
+    else{
+    printf("%c",t->operater);
+  }
+  }
+
+  if(t->kind == LEAF){
+    printf("%d", t->value);
+  }
+
+  if(t->leftchild != NULL){
+    printf(",");
+    preorder_list(t->leftchild);
+  }
+  if(t->rightchild != NULL){
+    printf(",");
+    preorder_list(t->rightchild);
+  }
+}
+//中置
+void inorder_list(tree t){
+  if(t->leftchild != NULL){
+    printf("(");
+    inorder_list(t->leftchild);
+  }
+  //演算子
+  if(t->leftchild == NULL){
+    printf("(");
+  }
+  printf("%c",t->operater);
+
+  //数値
+  if(t->kind == LEAF){
+    printf("%d",t->value);
+  }
+
+  if(t->rightchild != NULL){
+    inorder_list(t->rightchild);
+    printf(")");
+  }
+}
+
+void postorder_list(tree t){
+  if(t->leftchild != NULL){
+    preorder_list(t->leftchild);
+    printf(",");
+  }
+  if(t->rightchild != NULL){
+    preorder_list(t->rightchild);
+    printf(",");
+  }
+
+  if(t->kind == INTERNAL){
+    if(t->leftchild == NULL){
+      printf("m");
+    }
+    else{
+      printf("%c",t->operater);
+    }
+  }
+  else if(t->kind == LEAF){
+    printf("%d",t->value);
+  }
+}
+
+
 int main(int argc,char *argv[]){
   char expr[MAXLENGTH];
   tree t;
 
-
+  fprintf(stderr, "Expression = ");
   while((fgets(expr,MAXLENGTH,stdin) != NULL) && (expr[0] != '\n')){
     t = infix_to_tree(expr);
     if(!ERR){
       //preorder
-
+      printf("preorder: ");
+      preorder_list(t);
+      printf("\n");
       //inorder
-
+      printf("inorder: ");
+      inorder_list(t);
+      printf("\n");
       //postorder
+      printf("postorder: ");
+      postorder_list(t);
+      printf("\n");
     }
-
+    fprintf(stderr, "Expression = ");
   }
+  free_tree(t);
   return 0;
 }
