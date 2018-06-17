@@ -97,7 +97,7 @@ tree infix_to_tree0(char *expr,int *p){
         x = infix_to_tree0(expr,p);
         if(expr[*p] == ')'){
           (*p)++;
-          return create_internal('-',x,NULL);
+          return create_internal('-',NULL,x);
         }
         else{
           error(expr,*p,"括弧の対応が取れてない");
@@ -224,9 +224,10 @@ void inorder_list(tree t){
   if(t->kind == INTERNAL){
     if(t->leftchild == NULL){
       printf("(");
-      printf("aaaaaaaaaaa");
     }
-    printf("%c",t->operater);
+      printf("%c",t->operater);
+
+
   }
   //数値
   else if(t->kind == LEAF){
@@ -240,11 +241,11 @@ void inorder_list(tree t){
 
 void postorder_list(tree t){
   if(t->leftchild != NULL){
-    preorder_list(t->leftchild);
+    postorder_list(t->leftchild);
     printf(",");
   }
   if(t->rightchild != NULL){
-    preorder_list(t->rightchild);
+    postorder_list(t->rightchild);
     printf(",");
   }
 
