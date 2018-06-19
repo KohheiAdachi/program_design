@@ -4,6 +4,9 @@
 #include <stdlib.h>
 #define MAXLENGTH 100 //入力の最大長
 
+#include "mem_util.h"
+//#define free(A) printf("free = %p\n",A)
+
 int ERR = 0; //エラーを見つけた時，1をセットする
 typedef struct _node{
   enum {LEAF,INTERNAL} kind; /*葉か内部かの区別(enumは列挙子)*/
@@ -17,6 +20,8 @@ tree create_leaf(int v){
   t = (tree)malloc(sizeof(node)); /*メモリ割り当て(malloc)*/
   t->kind = LEAF;
   t->value = v;
+  t->leftchild = NULL; //左
+  t->rightchild = NULL; //右
   return t;
 }
 //内部ノードの作成
@@ -84,10 +89,7 @@ tree number(char *expr,int *p){
 
 tree infix_to_tree0(char *expr,int *p){
   tree x,y; //部分式の評価結果
-  x = (tree)malloc(sizeof(node));
-  y = (tree)malloc(sizeof(node));
   char op; //演算子
-
   if(expr[*p] != '(') /*単純な数*/
     return number(expr,p);
   else {
@@ -175,7 +177,6 @@ tree infix_to_tree(char *expr){
   tree t;
   p = 0;
   ERR = 0;  //エラーをリセット
-  t = (tree)malloc(sizeof(node));
 
   t = infix_to_tree0(expr,&p);
   //入力式の最後(\n)まで見れているかチェック
@@ -189,11 +190,14 @@ tree infix_to_tree(char *expr){
 
   return NULL;
 }
-
+//前置
 void preorder_list(tree t){
   //演算子(内部)
+  if (t == NULL) {
+    return;
+  }
   if(t->kind == INTERNAL){
-    if(t->rightchild == NULL){
+    if(t->leftchild == NULL){
       printf("m");
     }
     else{
@@ -216,6 +220,9 @@ void preorder_list(tree t){
 }
 //中置
 void inorder_list(tree t){
+  if (t == NULL) {
+    return;
+  }
   if(t->leftchild != NULL){
     printf("(");
     inorder_list(t->leftchild);
@@ -238,8 +245,11 @@ void inorder_list(tree t){
     printf(")");
   }
 }
-
+//後置
 void postorder_list(tree t){
+  if (t == NULL) {
+    return;
+  }
   if(t->leftchild != NULL){
     postorder_list(t->leftchild);
     printf(",");
