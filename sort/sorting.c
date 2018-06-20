@@ -49,7 +49,7 @@ void insertion_sort(element_type data[],int n){
 }
 int main(int argc, char *argv[])
 {
-  int datanum = 100, width = 100000;
+  int datanum = 100000, width = 100000;
   int data[datanum];
   int i;
 
@@ -61,8 +61,9 @@ int main(int argc, char *argv[])
 
   //selection_sort(data,datanum);
 
-  //insertion_sort(data,datanum);
-cpu = (double)(e - s)/CLOCKS_PER_SEC;
+  insertion_sort(data,datanum);
+
+  cpu = (double)(e - s)/CLOCKS_PER_SEC;
 /*
   for(i = 0; i < datanum; i++)
     printf("%d\n", data[i]);
