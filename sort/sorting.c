@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>  /* random, srandom */
 #include <time.h>    /* time */
+#include <string.h>
 typedef int element_type; /*データの型*/
 clock_t s, e; /* clock_t は int とほぼ同じ */
-double cpu;
+double cpu_b,cpu_s,cpu_i;
 void gendata(int a[], int n, int w)
 {
   int i;
@@ -51,24 +52,35 @@ int main(int argc, char *argv[])
 {
   int datanum = 100000, width = 100000;
   int data[datanum];
+  int data_b[datanum],data_s[datanum],data_i[datanum];
   int i;
 
   srandom(time(NULL)); /* initialize random */
 
   gendata(data, datanum, width);
+  //配列のコピー
+  memcpy(data_s, data, sizeof(int) * datanum);
+  memcpy(data_i, data, sizeof(int) * datanum);
 
-  //bubble_sort(data,datanum);
 
-  //selection_sort(data,datanum);
 
-  insertion_sort(data,datanum);
+  bubble_sort(data,datanum);
+  cpu_b = (double)(e - s)/CLOCKS_PER_SEC;
+  printf("bubble_sort:%f\n",cpu_b);
 
-  cpu = (double)(e - s)/CLOCKS_PER_SEC;
+  selection_sort(data_s,datanum);
+  cpu_s = (double)(e - s)/CLOCKS_PER_SEC;
+  printf("selection_sort:%f\n",cpu_s);
+
+  insertion_sort(data_i,datanum);
+  cpu_i = (double)(e - s)/CLOCKS_PER_SEC;
+  printf("insertion_sort:%f\n",cpu_i);
+
+
 /*
   for(i = 0; i < datanum; i++)
     printf("%d\n", data[i]);
 */
-  printf("%f\n",cpu);
 
   return 0;
 }
