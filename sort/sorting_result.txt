@@ -1,0 +1,40 @@
+datanum:10000
+bubble_sort: 0.266608
+selection_sort: 0.265628
+insertion_sort: 0.083581
+datanum:20000
+bubble_sort: 1.172719
+selection_sort: 1.205325
+insertion_sort: 0.347744
+datanum:30000
+bubble_sort: 2.730635
+selection_sort: 2.768120
+insertion_sort: 0.749450
+datanum:40000
+bubble_sort: 4.842163
+selection_sort: 5.078481
+insertion_sort: 1.390705
+datanum:50000
+bubble_sort: 7.674691
+selection_sort: 7.359638
+insertion_sort: 2.063634
+datanum:60000
+bubble_sort: 10.502303
+selection_sort: 10.613979
+insertion_sort: 2.878329
+datanum:70000
+bubble_sort: 14.303209
+selection_sort: 14.523104
+insertion_sort: 3.996898
+datanum:80000
+bubble_sort: 18.737443
+selection_sort: 19.042080
+insertion_sort: 5.499210
+datanum:90000
+bubble_sort: 24.901850
+selection_sort: 24.469575
+insertion_sort: 6.554902
+datanum:100000
+bubble_sort: 31.259684
+selection_sort: 31.445567
+insertion_sort: 8.504616
