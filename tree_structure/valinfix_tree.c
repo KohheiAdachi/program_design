@@ -294,8 +294,9 @@ int main(int argc,char *argv[]){
       postorder_list(t);
       printf("\n");
     }
+    free_tree(t);
     fprintf(stderr, "Expression = ");
   }
-  free_tree(t);
+
   return 0;
 }
