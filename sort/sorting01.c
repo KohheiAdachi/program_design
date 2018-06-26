@@ -98,7 +98,7 @@ void quick_sort(element_type data[],int i,int j){
 }
 int main(int argc, char *argv[])
 {
-  int datanum = 10 ,width = 10;
+  int datanum = 10 ,width = 100;
   int data[datanum];
   int data_b[datanum],data_s[datanum],data_i[datanum];
   int i;
