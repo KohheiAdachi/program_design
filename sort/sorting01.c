@@ -50,6 +50,7 @@ void insertion_sort(element_type data[],int n){
   }
   e = clock();
 }
+//find_pivot
 int find_pivot(element_type data[],int i,int j){
   int k;
   for(k=i+1;k<=j;k++){
@@ -64,7 +65,7 @@ int find_pivot(element_type data[],int i,int j){
 }
   return -1;
 }
-
+//partition
 int partition(element_type data[],int i,int j,element_type pivot){
  int left,right;
  int tmp;
@@ -87,6 +88,7 @@ int partition(element_type data[],int i,int j,element_type pivot){
  } while(left<=right);
  return left;
 }
+//クイックソート
 void quick_sort(element_type data[],int i,int j){
   int pivotindex,k;
   pivotindex = find_pivot(data,i,j);
@@ -96,6 +98,8 @@ void quick_sort(element_type data[],int i,int j){
     quick_sort(data,k,j);
   }
 }
+//マージソート
+
 int main(int argc, char *argv[])
 {
   int datanum = 10 ,width = 100;
