@@ -91,19 +91,16 @@ int partition(element_type data[],int i,int j,element_type pivot){
 //クイックソート
 void quick_sort(element_type data[],int i,int j){
   int pivotindex,k;
-  s = clock();
   pivotindex = find_pivot(data,i,j);
   if(pivotindex >= 0){
     k = partition(data,i,j,data[pivotindex]);
     quick_sort(data,i,k-1);
     quick_sort(data,k,j);
-    e = clock();
   }
 }
 //マージソート
 void Msort(element_type Data[],element_type tmp[],int left,int right){
     int mid,i,j,k;
-    s = clock();
     if(left>=right)
         return;
 
@@ -129,7 +126,6 @@ void Msort(element_type Data[],element_type tmp[],int left,int right){
             j--;
         }
     }
-    e = clock();
 }
 //比較用の関数 cmp
 int cmp( const void *p, const void *q ) {
@@ -186,7 +182,7 @@ int main(int argc, char *argv[])
 int datanum = 100000*1000;
 int width = 100;
 int i;
-element_type *ori_data,*m_data,*q_data,*tmp;
+element_type *ori_data,*m_data,*tmp,*q_data,*dq_data;
 /*
 tmp = (int *)malloc(sizeof(int)*datanum);
 ori_data = (int *)malloc(sizeof(int)*datanum);
@@ -195,38 +191,49 @@ q_data = (int *)malloc(sizeof(int)*datanum);
 */
   for(i=1;i<=1000;i++){
     datanum = i * 100000;
+    printf("datanum:%d",datanum);
     tmp = (int *)malloc(sizeof(int)*datanum);
     ori_data = (int *)malloc(sizeof(int)*datanum);
     m_data = (int *)malloc(sizeof(int)*datanum);
     q_data = (int *)malloc(sizeof(int)*datanum);
+    dq_data = (int *)malloc(sizeof(int)*datanum);
 
     gendata(ori_data, datanum, width);
+    
     memcpy(ori_data, m_data, sizeof(int) * datanum);
     memcpy(ori_data, q_data, sizeof(int) * datanum);
+    memcpy(ori_data, dq_data, sizeof(int) * datanum);
 
 
+
+    s = clock();
     Msort(m_data,tmp,0,datanum-1);
-    cpu_m = (double)(e - s)/CLOCKS_PER_SEC;
-    printf("quick_sort: %f\n",cpu_m);
     free(m_data);
     free(tmp);
+    e = clock();
+    cpu_m = (double)(e - s)/CLOCKS_PER_SEC;
+    printf("Merge_sort: %f\n",cpu_m);
 
+
+
+    s = clock();
     quick_sort(q_data,0,datanum-1);
+    free(q_data);
+    e = clock();
     cpu_q = (double)(e - s)/CLOCKS_PER_SEC;
-    free(ori_data);
+
     printf("quick_sort: %f\n",cpu_q);
 
 
     s = clock();
-    qsort((void *)q_data,datanum,sizeof(q_data[0]),cmp);
-    cpu_qd=(double)(e - s)/CLOCKS_PER_SEC;
-    free(q_data);
+    qsort((void *)dq_data,datanum,sizeof(dq_data[0]),cmp);
+    free(dq_data);
     e = clock();
     cpu_qd = (double)(e - s)/CLOCKS_PER_SEC;
     printf("d_quick_sort: %f\n",cpu_qd);
 
 
-    //free(ori_data);
+    free(ori_data);
     /*
      for(i = 0; i < datanum; i++)
        printf("%d\n", data[i]);
