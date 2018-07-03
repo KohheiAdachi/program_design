@@ -4,7 +4,7 @@
 #include <string.h>
 typedef int element_type; /*データの型*/
 clock_t s, e; /* clock_t は int とほぼ同じ */
-double cpu_b,cpu_s,cpu_i,cpu_q,cpu_m;
+double cpu_b,cpu_s,cpu_i,cpu_q,cpu_m,cpu_qd;
 void quick_sort(element_type data[],int i,int j);
 
 void gendata(int a[], int n, int w)
@@ -103,6 +103,7 @@ void quick_sort(element_type data[],int i,int j){
 //マージソート
 void Msort(element_type Data[],element_type tmp[],int left,int right){
     int mid,i,j,k;
+    s = clock();
     if(left>=right)
         return;
 
@@ -128,8 +129,7 @@ void Msort(element_type Data[],element_type tmp[],int left,int right){
             j--;
         }
     }
-
-
+    e = clock();
 }
 //比較用の関数 cmp
 int cmp( const void *p, const void *q ) {
@@ -138,69 +138,100 @@ int cmp( const void *p, const void *q ) {
 
 int main(int argc, char *argv[])
 {
-  int datanum = 10 ,width = 100;
+/*
+  int datanum = 100000 ,width = 100;
   int data[datanum];
   int data_b[datanum],data_s[datanum],data_i[datanum];
   int i;
-  element_type *tmp;
-  tmp = (int *)malloc(sizeof(int)*datanum);
-  srandom(time(NULL)); /* initialize random */
+  srandom(time(NULL));
 
 
-
-//  for(i=1;i<=10;i++){
-  //  datanum = i * 10000;
+  for(i=1;i<=10;i++){
+    datanum = i * 10000;
     printf("datanum:%d\n",datanum);
     gendata(data, datanum, width);
 
     //配列のコピー
-//    memcpy(data_s, data, sizeof(int) * datanum);
-//    memcpy(data_i, data, sizeof(int) * datanum);
-
-  /*
-    quick_sort(data,0,datanum-1);
-    cpu_q = (double)(e - s)/CLOCKS_PER_SEC;
-    printf("quick_sort: %f\n",cpu_q);
-  */
-/*
-   Msort(data,tmp,0,datanum-1);
-   free(tmp);
-*/
-   qsort((void *)data,datanum,sizeof(data[0]),cmp);
-    for(i = 0; i < datanum; i++)
-      printf("%d\n", data[i]);
+    memcpy(data_s, data, sizeof(int) * datanum);
+    memcpy(data_i, data, sizeof(int) * datanum);
 
 
 
-
-/*
   bubble_sort(data,datanum);
   cpu_b = (double)(e - s)/CLOCKS_PER_SEC;
   printf("bubble_sort: %f\n",cpu_b);
+
   selection_sort(data_s,datanum);
   cpu_s = (double)(e - s)/CLOCKS_PER_SEC;
   printf("selection_sort: %f\n",cpu_s);
+
   insertion_sort(data_i,datanum);
   cpu_i = (double)(e - s)/CLOCKS_PER_SEC;
   printf("insertion_sort: %f\n",cpu_i);
-*/
-/*
+
+
   bubble_sort(data,datanum);
   cpu_b = (double)(e - s)/CLOCKS_PER_SEC;
   printf("%f,",cpu_b);
+
   selection_sort(data_s,datanum);
   cpu_s = (double)(e - s)/CLOCKS_PER_SEC;
   printf("%f",cpu_s);
+
   insertion_sort(data_i,datanum);
   cpu_i = (double)(e - s)/CLOCKS_PER_SEC;
   printf(",%f\n",cpu_i);
+}
 */
+int datanum = 100000*1000;
+int width = 100;
+int i;
+element_type *ori_data,*m_data,*q_data,*tmp;
+/*
+tmp = (int *)malloc(sizeof(int)*datanum);
+ori_data = (int *)malloc(sizeof(int)*datanum);
+m_data = (int *)malloc(sizeof(int)*datanum);
+q_data = (int *)malloc(sizeof(int)*datanum);
+*/
+  for(i=1;i<=1000;i++){
+    datanum = i * 100000;
+    tmp = (int *)malloc(sizeof(int)*datanum);
+    ori_data = (int *)malloc(sizeof(int)*datanum);
+    m_data = (int *)malloc(sizeof(int)*datanum);
+    q_data = (int *)malloc(sizeof(int)*datanum);
+
+    gendata(ori_data, datanum, width);
+    memcpy(ori_data, m_data, sizeof(int) * datanum);
+    memcpy(ori_data, q_data, sizeof(int) * datanum);
 
 
+    Msort(m_data,tmp,0,datanum-1);
+    cpu_m = (double)(e - s)/CLOCKS_PER_SEC;
+    printf("quick_sort: %f\n",cpu_m);
+    free(m_data);
+    free(tmp);
+
+    quick_sort(q_data,0,datanum-1);
+    cpu_q = (double)(e - s)/CLOCKS_PER_SEC;
+    free(ori_data);
+    printf("quick_sort: %f\n",cpu_q);
 
 
-//}
+    s = clock();
+    qsort((void *)q_data,datanum,sizeof(q_data[0]),cmp);
+    cpu_qd=(double)(e - s)/CLOCKS_PER_SEC;
+    free(q_data);
+    e = clock();
+    cpu_qd = (double)(e - s)/CLOCKS_PER_SEC;
+    printf("d_quick_sort: %f\n",cpu_qd);
 
+
+    //free(ori_data);
+    /*
+     for(i = 0; i < datanum; i++)
+       printf("%d\n", data[i]);
+    */
+}
 /*
   for(i = 0; i < datanum; i++)
     printf("%d\n", data[i]);
