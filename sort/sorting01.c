@@ -131,6 +131,11 @@ void Msort(element_type Data[],element_type tmp[],int left,int right){
 
 
 }
+//比較用の関数 cmp
+int cmp( const void *p, const void *q ) {
+    return *(int*)p - *(int*)q;
+}
+
 int main(int argc, char *argv[])
 {
   int datanum = 10 ,width = 100;
@@ -157,10 +162,11 @@ int main(int argc, char *argv[])
     cpu_q = (double)(e - s)/CLOCKS_PER_SEC;
     printf("quick_sort: %f\n",cpu_q);
   */
-
+/*
    Msort(data,tmp,0,datanum-1);
    free(tmp);
-
+*/
+   qsort((void *)data,datanum,sizeof(data[0]),cmp);
     for(i = 0; i < datanum; i++)
       printf("%d\n", data[i]);
 
