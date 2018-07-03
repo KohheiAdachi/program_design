@@ -4,7 +4,7 @@
 #include <string.h>
 typedef int element_type; /*データの型*/
 clock_t s, e; /* clock_t は int とほぼ同じ */
-double cpu_b,cpu_s,cpu_i;
+double cpu_b,cpu_s,cpu_i,cpu_q,cpu_m;
 void quick_sort(element_type data[],int i,int j);
 
 void gendata(int a[], int n, int w)
@@ -91,22 +91,54 @@ int partition(element_type data[],int i,int j,element_type pivot){
 //クイックソート
 void quick_sort(element_type data[],int i,int j){
   int pivotindex,k;
+  s = clock();
   pivotindex = find_pivot(data,i,j);
   if(pivotindex >= 0){
     k = partition(data,i,j,data[pivotindex]);
     quick_sort(data,i,k-1);
     quick_sort(data,k,j);
+    e = clock();
   }
 }
 //マージソート
+void Msort(element_type Data[],element_type tmp[],int left,int right){
+    int mid,i,j,k;
+    if(left>=right)
+        return;
 
+    mid = (left+right)/2;
+    Msort(Data,tmp,left,mid);
+    Msort(Data,tmp,mid+1,right);
+
+    for(i=left;i<=mid;i++)
+        tmp[i]=Data[i];
+    for(i=mid+1,j=right;i<=right;i++,j--)
+        tmp[i]=Data[j];
+
+    i=left;
+    j=right;
+
+    for(k=left;k<=right;k++){
+        if(tmp[i]<=tmp[j]){
+            Data[k]=tmp[i];
+            i++;
+        }
+        else{
+            Data[k]=tmp[j];
+            j--;
+        }
+    }
+
+
+}
 int main(int argc, char *argv[])
 {
   int datanum = 10 ,width = 100;
   int data[datanum];
   int data_b[datanum],data_s[datanum],data_i[datanum];
   int i;
-
+  element_type *tmp;
+  tmp = (int *)malloc(sizeof(int)*datanum);
   srandom(time(NULL)); /* initialize random */
 
 
@@ -120,7 +152,15 @@ int main(int argc, char *argv[])
 //    memcpy(data_s, data, sizeof(int) * datanum);
 //    memcpy(data_i, data, sizeof(int) * datanum);
 
+  /*
     quick_sort(data,0,datanum-1);
+    cpu_q = (double)(e - s)/CLOCKS_PER_SEC;
+    printf("quick_sort: %f\n",cpu_q);
+  */
+
+   Msort(data,tmp,0,datanum-1);
+   free(tmp);
+
     for(i = 0; i < datanum; i++)
       printf("%d\n", data[i]);
 
