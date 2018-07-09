@@ -180,7 +180,7 @@ int main(int argc, char *argv[])
 }
 */
 int datanum = 100000*1000;
-int width = 100;
+int width = 10000;
 int i;
 element_type *ori_data,*m_data,*tmp,*q_data,*dq_data;
 /*
@@ -189,9 +189,11 @@ ori_data = (int *)malloc(sizeof(int)*datanum);
 m_data = (int *)malloc(sizeof(int)*datanum);
 q_data = (int *)malloc(sizeof(int)*datanum);
 */
-  for(i=1;i<=1000;i++){
+  printf("datanum,Msort,qsort,D_qsort\n");
+  for(i=1;i<=1000;i+=10){
     datanum = i * 100000;
-    printf("datanum:%d",datanum);
+    printf("datanum:%d\n",datanum);
+    //printf("%d,",datanum);
     tmp = (int *)malloc(sizeof(int)*datanum);
     ori_data = (int *)malloc(sizeof(int)*datanum);
     m_data = (int *)malloc(sizeof(int)*datanum);
@@ -199,7 +201,7 @@ q_data = (int *)malloc(sizeof(int)*datanum);
     dq_data = (int *)malloc(sizeof(int)*datanum);
 
     gendata(ori_data, datanum, width);
-    
+
     memcpy(ori_data, m_data, sizeof(int) * datanum);
     memcpy(ori_data, q_data, sizeof(int) * datanum);
     memcpy(ori_data, dq_data, sizeof(int) * datanum);
@@ -213,7 +215,7 @@ q_data = (int *)malloc(sizeof(int)*datanum);
     e = clock();
     cpu_m = (double)(e - s)/CLOCKS_PER_SEC;
     printf("Merge_sort: %f\n",cpu_m);
-
+    //printf("%f,",cpu_m);
 
 
     s = clock();
@@ -221,9 +223,8 @@ q_data = (int *)malloc(sizeof(int)*datanum);
     free(q_data);
     e = clock();
     cpu_q = (double)(e - s)/CLOCKS_PER_SEC;
-
     printf("quick_sort: %f\n",cpu_q);
-
+    //printf("%f,",cpu_q);
 
     s = clock();
     qsort((void *)dq_data,datanum,sizeof(dq_data[0]),cmp);
@@ -231,7 +232,7 @@ q_data = (int *)malloc(sizeof(int)*datanum);
     e = clock();
     cpu_qd = (double)(e - s)/CLOCKS_PER_SEC;
     printf("d_quick_sort: %f\n",cpu_qd);
-
+    //printf("%f\n",cpu_qd);
 
     free(ori_data);
     /*
