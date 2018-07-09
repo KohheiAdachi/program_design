@@ -180,7 +180,8 @@ int main(int argc, char *argv[])
 }
 */
 int datanum = 100000*1000;
-int width = 10000;
+//int datanum = 10000;
+int width = 100;
 int i;
 element_type *ori_data,*m_data,*tmp,*q_data,*dq_data;
 /*
@@ -202,9 +203,9 @@ q_data = (int *)malloc(sizeof(int)*datanum);
 
     gendata(ori_data, datanum, width);
 
-    memcpy(ori_data, m_data, sizeof(int) * datanum);
-    memcpy(ori_data, q_data, sizeof(int) * datanum);
-    memcpy(ori_data, dq_data, sizeof(int) * datanum);
+    memcpy(m_data, ori_data, sizeof(int) * datanum);
+    memcpy(q_data, ori_data, sizeof(int) * datanum);
+    memcpy(dq_data, ori_data, sizeof(int) * datanum);
 
 
 
@@ -235,10 +236,9 @@ q_data = (int *)malloc(sizeof(int)*datanum);
     //printf("%f\n",cpu_qd);
 
     free(ori_data);
-    /*
-     for(i = 0; i < datanum; i++)
-       printf("%d\n", data[i]);
-    */
+
+
+
 }
 /*
   for(i = 0; i < datanum; i++)
