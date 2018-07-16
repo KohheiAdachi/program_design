@@ -50,10 +50,14 @@ int main(int argc, char const *argv[]) {
   int n,m;
   clock_t s,e;
   double rt,dt;
-  if(argc != 2){
+  if(argc == 3){
   n = atoi(argv[1]);
   m = atoi(argv[2]);
 
+  if(n<m){
+    printf("無効な値です\n");
+    return 1;
+  }
   s = clock();
   printf("r_comb:%d\n",r_comb(n,m));
   e = clock();
@@ -68,7 +72,7 @@ int main(int argc, char const *argv[]) {
   printf("d_comb time:%lf\n",dt);
   }
   else{
-    fprintf(stderr,"type:>%s n m \n",argv[0]);
+    fprintf(stderr,"type:%s n m \n",argv[0]);
 		return 1;
   }
 
