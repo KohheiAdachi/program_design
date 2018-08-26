@@ -1,6 +1,6 @@
 # Program_Design（２年前期プログラム設計）
 
-- [Program_Design（プログラム設計）](#program_designプログラム設計)
+- 目次
     - [cal](#cal)
     - [Polish](#polish)
     - [valinfix](#valinfix)
