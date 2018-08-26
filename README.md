@@ -1,5 +1,4 @@
-# Program_Design（プログラム設計）
-<!-- TOC -->
+# Program_Design（２年前期プログラム設計）
 
 - [Program_Design（プログラム設計）](#program_designプログラム設計)
     - [cal](#cal)
